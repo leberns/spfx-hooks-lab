@@ -1,11 +1,28 @@
 import * as React from 'react';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
 import { ITodoItem } from './ITodoItem';
 
 export default function TodoList() {
+  const initialTodos = () => {
+    const persistedTodos: ITodoItem[] = JSON.parse(window.localStorage.getItem('todos')) || [];
+    return persistedTodos;
+  };
+
   const [text, updateText] = useState('');
   const [priority, updatePriority] = useState(1);
-  const [todos, updateTodos] = useState([] as ITodoItem[]);
+  const [todos, updateTodos] = useState(initialTodos);
+  const [countTodos, updateCountTodos] = useState(0);
+  const [countPendingITems, updateCountPendingITems] = useState(0);
+
+  useEffect(() => {
+    const todosPersist = JSON.stringify(todos);
+    window.localStorage.setItem('todos', todosPersist);
+    console.log(todosPersist);
+
+    updateCountTodos(todos.length);
+    updateCountPendingITems(todos.filter(i => !i.isDone).length);
+    console.log(`Count of pending items: ${countPendingITems}, total: ${countTodos}`);
+  }, [todos]);
 
   const addItem = () => {
     const item: ITodoItem = {
@@ -70,6 +87,7 @@ export default function TodoList() {
           </div>
         ))}
       </div>
+      <div>There are still {countPendingITems} item(s) pending from a total of {countTodos}</div>
     </section>
   );
 }
