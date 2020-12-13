@@ -1,6 +1,10 @@
 {
-  "extends": "@microsoft/sp-tslint-rules/base-tslint.json",
+  "extends": [
+    "@microsoft/sp-tslint-rules/base-tslint.json",
+    "tslint-react-hooks"
+  ],
   "rules": {
+    "react-hooks-nesting": "warning",
     "class-name": false,
     "export-name": false,
     "forin": false,

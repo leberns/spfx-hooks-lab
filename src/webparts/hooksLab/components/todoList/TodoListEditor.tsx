@@ -48,7 +48,7 @@ export default function TodoList() {
           type="number"
           value={priority}
           onChange={onChangePriority}
-          ></input>
+        ></input>
       </div>
       <div>
         <span>Text: </span>
@@ -71,5 +71,5 @@ export default function TodoList() {
         ))}
       </div>
     </section>
-  )
+  );
 }
