@@ -25,7 +25,7 @@ If not, you might need to enable workspace library execution:
 
 - open the Command Palette in VSCode (Control Shift P)
 - type ´´´ESLint: Manage workspace library execution´´´
-- enable it
+- # enable it
 
 ## Used SharePoint Framework Version
 
