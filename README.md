@@ -9,23 +9,24 @@ Experiments with React Hooks.
     cd C:\Dev\GitHub\leberns\spfx-hooks-lab   (your solution root folder)
     npm install tslint-react-hooks --save-dev
 
-See the configurations with names containing "hooks" at ´´´tslint.json´´´.
+See the configurations with names containing "hooks" at `tslint.json`.
 
-To check if the rule works open ´´´TodoListEditor.tsx´´´ and add a condition to one of the hooks, ex.:
+To check if the rule works open `TodoListEditor.tsx` and add a condition to one of the hooks, ex.:
 
-´´´TypeScript
+```TypeScript
 const [text, updateText] = useState('');
 if (text === 'abc') {
 const [priority, updatePriority] = useState(1);
 }
-´´´
-In ´´´useState(1)´´´ the following message can be seen: "A hook cannot appear inside an if statement (react-hooks-nesting)tslint(1)"
+```
+
+In `useState(1)` the following message can be seen: "A hook cannot appear inside an if statement (react-hooks-nesting)tslint(1)"
 
 If not, you might need to enable workspace library execution:
 
 - open the Command Palette in VSCode (Control Shift P)
-- type ´´´ESLint: Manage workspace library execution´´´
-- # enable it
+- type `ESLint: Manage Library Execution`
+- enable it
 
 ## Used SharePoint Framework Version
 
