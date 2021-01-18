@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import { ITodoItem } from './ITodoItem';
 
 export default function TodoList() {
@@ -13,18 +13,27 @@ export default function TodoList() {
   const [todos, updateTodos] = useState(initialTodos);
   const [countTodos, updateCountTodos] = useState(0);
   const [countPendingITems, updateCountPendingITems] = useState(0);
+  const textRef = useRef<HTMLInputElement>();
+
+  const updateStats = () => {
+    updateCountTodos(todos.length);
+    updateCountPendingITems(todos.filter(i => !i.isDone).length);
+    console.log(`Count of pending items: ${countPendingITems}, total: ${countTodos}`);
+  };
 
   useEffect(() => {
     const todosPersist = JSON.stringify(todos);
     window.localStorage.setItem('todos', todosPersist);
     console.log(todosPersist);
-
-    updateCountTodos(todos.length);
-    updateCountPendingITems(todos.filter(i => !i.isDone).length);
-    console.log(`Count of pending items: ${countPendingITems}, total: ${countTodos}`);
+    updateStats();
   }, [todos]);
 
   const addItem = () => {
+    if (text.trim().length === 0) {
+      textRef.current.focus();
+      return;
+    }
+
     const item: ITodoItem = {
       id: Date.now(),
       text: text,
@@ -49,6 +58,11 @@ export default function TodoList() {
       ));
   };
 
+  const removeDone = () => {
+    const pendingTodos = todos.filter((todoItem) => !todoItem.isDone);
+    updateTodos(pendingTodos);
+  };
+
   const onChangeText = (e: ChangeEvent<HTMLInputElement>) => updateText(e.target.value);
   const onChangePriority = (e: ChangeEvent<HTMLInputElement>) => updatePriority(+e.target.value);
   const onClickAdd = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +70,7 @@ export default function TodoList() {
     addItem();
   };
   const onClickDone = (todo: ITodoItem) => setDone(todo);
+  const onClickRemoveDone = () => removeDone();
 
   return (
     <section>
@@ -72,10 +87,12 @@ export default function TodoList() {
         <input
           type="text"
           value={text}
+          ref={textRef}
           onChange={onChangeText}
         ></input>
       </div>
       <button onClick={onClickAdd.bind(this)}>Add</button>
+      <button onClick={onClickRemoveDone.bind(this)}>Remove Done</button>
       <div>
         {todos.map(todo => (
           <div key={todo.id} onClick={onClickDone.bind(this, todo)}>
